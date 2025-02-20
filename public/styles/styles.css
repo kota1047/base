@@ -1,0 +1,336 @@
+.borad{
+    display: grid;
+    grid-template-columns: repeat(19, 1fr);
+    grid-template-rows: repeat(19
+    , 1fr);    
+    gap: 5px; /* 各マスの間隔 */
+
+    width: 65vw; /* 画面幅の50% */
+    height: 100vh; /* 画面の高さ全体を使う */
+    position: absolute; /* 固定位置にする */
+    left: 0; /* 左端に配置 */
+    top: 0; /* 上端に配置 */
+
+    background-color: rgba(211, 211, 211, 0.363); /* グリッド全体の背景色 */
+  }
+
+  .Line1 {
+    grid-row: 4;
+    grid-column: 11;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+
+  .Line2 {
+    grid-row: 7;
+    grid-column: 14;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line3 {
+    grid-row: 7;
+    grid-column: 12;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line4 {
+    grid-row: 7;
+    grid-column: 10;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line5 {
+    grid-row: 7;
+    grid-column: 8;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line6 {
+    grid-row: 7;
+    grid-column: 6;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line7 {
+    grid-row: 7;
+    grid-column: 4;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+    .Line8 {
+    grid-row: 11;
+    grid-column: 14;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line9 {
+    grid-row: 11;
+    grid-column: 12;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line10 {
+    grid-row: 11;
+    grid-column: 10;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line11 {
+    grid-row: 11;
+    grid-column: 8;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line12 {
+    grid-row: 11;
+    grid-column: 6;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  .Line13 {
+    grid-row: 11;
+    grid-column: 4;
+    width: 50px;
+    height: 50px;
+    position: relative; /* 疑似要素を基準に配置 */
+    
+  }
+  
+  [class^="Line"]::after {
+    content: "";
+    position: absolute;
+    top: 25px; /* 高さ25pxの位置に配置 */
+    left: 0;
+    width: 100%; /* ボックスの横幅に合わせる */
+    height: 2px; /* 線の太さ */
+    background-color: black; /* 線の色 */
+  }
+
+  /* コンテナ内のアイテムの設定 */
+  .Home-cell-Red{
+    background: #f88;
+    grid-row: 2 / span 5;
+    grid-column: 14 / span 5;
+  }
+
+  .Home-cell-Blue{
+    background: #0d31ff3b;
+    grid-row: 14 / span 5;
+    grid-column: 2 / span 5;
+  }
+
+  .cell-start-Red{
+    width: 50px; 
+    height: 50px;
+    grid-row: 4;
+    grid-column: 12;
+    background: #f88;
+  }
+
+  .cell-start-Blue{
+    width: 50px; 
+    height: 50px;
+    grid-row: 16;
+    grid-column: 8;
+    background: #0d31ff3b;
+  }
+
+  .cell3{
+    width: 50px; 
+    height: 50px;
+    grid-row: 6;
+    grid-column: 12;
+    background: #88f;
+  }
+
+  .cell4{
+    width: 50px; 
+    height: 50px;
+    grid-row: 8;
+    grid-column: 12;
+    background: #88f;
+  }
+
+  .cell5{
+    width: 50px; 
+    height: 50px;
+    grid-row: 8;
+    grid-column: 14;
+    background: #88f;
+  }
+
+  .cell6{
+    width: 50px; 
+    height: 50px;
+    grid-row: 8;
+    grid-column: 16;
+    background: #88f;
+  }
+
+  .cell7{
+    width: 50px; 
+    height: 50px;
+    grid-row: 10;
+    grid-column: 16;
+    background: #88f;
+  }
+
+  .cell8{
+    width: 50px; 
+    height: 50px;
+    grid-row: 12;
+    grid-column: 16;
+    background: #88f;
+  }
+
+  .cell9{
+    width: 50px; 
+    height: 50px;
+    grid-row: 12;
+    grid-column: 14;
+    background: #88f;
+  }
+
+  .cell10{
+    width: 50px; 
+    height: 50px;
+    grid-row: 12;
+    grid-column: 12;
+    background: #88f;
+  }
+
+  .cell11{
+    width: 50px; 
+    height: 50px;
+    grid-row: 14;
+    grid-column: 12;
+    background: #88f;
+  }
+
+  .cell12{
+    width: 50px; 
+    height: 50px;
+    grid-row: 16;
+    grid-column: 12;
+    background: #88f;
+  }
+
+  .cell13{
+    width: 50px; 
+    height: 50px;
+    grid-row: 16;
+    grid-column: 10;
+    background: #88f;
+  }
+
+  .cell14{
+    width: 50px; 
+    height: 50px;
+    grid-row: 4;
+    grid-column: 10;
+    background: #88f;
+  }
+
+  .cell15{
+    width: 50px; 
+    height: 50px;
+    grid-row: 14;
+    grid-column: 8;
+    background: #88f;
+  }
+
+  .cell16{
+    width: 50px; 
+    height: 50px;
+    grid-row: 12;
+    grid-column: 8;
+    background: #88f;
+  }
+
+  .cell17{
+    width: 50px; 
+    height: 50px;
+    grid-row: 12;
+    grid-column: 6;
+    background: #88f;
+  }
+
+  .cell18{
+    width: 50px; 
+    height: 50px;
+    grid-row: 12;
+    grid-column: 4;
+    background: #88f;
+  }
+
+  .cell19{
+    width: 50px; 
+    height: 50px;
+    grid-row: 10;
+    grid-column: 4;
+    background: #88f;
+  }
+
+  .cell20{
+    width: 50px; 
+    height: 50px;
+    grid-row: 8;
+    grid-column: 4;
+    background: #88f;
+  }
+
+  .cell21{
+    width: 50px; 
+    height: 50px;
+    grid-row: 8;
+    grid-column: 6;
+    background: #88f;
+  }
+
+  .cell22{
+    width: 50px; 
+    height: 50px;
+    grid-row: 8;
+    grid-column: 8;
+    background: #88f;
+  }
+
+  .cell23{
+    width: 50px; 
+    height: 50px;
+    grid-row: 6;
+    grid-column: 8;
+    background: #88f;
+  }
+
+  .cell24{
+    width: 50px; 
+    height: 50px;
+    grid-row: 4;
+    grid-column: 8;
+    background: #88f;
+  }

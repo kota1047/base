@@ -1,11 +1,12 @@
 <template>
-    <div class="box" id="makeImg"/>
-        <div
+    <!-- <div class="box" id="makeImg"/> -->
+        <!-- <div
         :style="{
             transform: `translate(${x}px, ${y}px)`
         }">
         <img src="../assets/icon_psyduck.png" class="icon_codack" alt="コダック" width="75" height="75"/>
-        </div>
+        </div> -->
+        <daiceRoll/>
 </template>
 
 <script setup lang="ts">
