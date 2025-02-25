@@ -14,10 +14,13 @@
   
   const diceValue = ref(0);
   const useImages = ref(true); // 画像を使用するかどうか
-  
+  const emit = defineEmits(['diceRolled'])
   // ランダムに算出した数値のさいころの目を出力する。
   const rollDice = () => {
-    diceValue.value = Math.floor(Math.random() * 6) + 1;
+    const randomValue = Math.floor(Math.random() * 6) + 1;
+    // const randomValue = 1;
+    diceValue.value = randomValue;
+    emit('diceRolled', randomValue)
   }
   
   </script>

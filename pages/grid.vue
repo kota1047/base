@@ -87,21 +87,228 @@
       <div class="Home-cell-Bule3">3</div>
       <div class="Home-cell-Bule4">4</div>
       
-      <!-- マス目 -->
-      <div class="piece" id="piece"></div>
+      <!-- マス目 赤 -->
+      <div class="pieceRed" id="piece"></div>
+      <!-- マス目 青 -->
+      <div class="pieceBlue" id="piece"></div>
+      <div
+      v-for="(piece, index) in pieces"
+      :key="index"
+      :class="piece.isRed ? 'pieceRed' : 'pieceBlue'"
+      :style="{ gridRow: piece.row, gridColumn: piece.column }"
+      class="piece"
+    ></div>
+    </div>
+    <div class="dice-roller">
+      <DaiceRoll @dice-rolled="handleEvent"/>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
+// 駒のマス目
+const crruentValueRed1:Ref<number> = ref(0); // 赤
+const crruentValueRed2:Ref<number> = ref(0); // 赤
+const crruentValueRed3:Ref<number> = ref(0); // 赤
+const crruentValueRed4:Ref<number> = ref(0); // 赤
+
+const crruentValueBlue1:Ref<number> = ref(0); // 青
+const crruentValueBlue2:Ref<number> = ref(0); // 青
+const crruentValueBlue3:Ref<number> = ref(0); // 青
+const crruentValueBlue4:Ref<number> = ref(0); // 青
+const isRed:Ref<boolean> = ref(false); // 1:赤 2:青
+
+  interface Piece {
+    id: number;
+    row: number;
+    column: number;
+    isRed: boolean;
+  }
+
+// 赤コマ 4 つ、青コマ 4 つの初期位置（例として 1 行目・2 行目に配置）
+const pieces = reactive<Piece[]>([
+  { id: 1,row: 3, column: 15, isRed: true },
+  { id: 2,row: 3, column: 17, isRed: true },
+  { id: 3,row: 5, column: 15, isRed: true },
+  { id: 4,row: 5, column: 17, isRed: true },
+  { id: 5,row: 15, column: 3, isRed: false },
+  { id: 6,row: 15, column: 5, isRed: false },
+  { id: 7,row: 17, column: 3, isRed: false },
+  { id: 8,row: 17, column: 5, isRed: false },
+]);
+
+// 選択された駒のIDを保持する reactive な変数
+const selectedPieceId = ref<number | null>(null);
+
+// 駒を選択するハンドラ
+const selectPiece = (id: number) => {
+  selectedPieceId.value = id;
+  console.log("Selected piece id:", id);
+};
+
+// 型定義
+type MyTuple = [number, [number, number]];
+// 赤チームの駒の位置
+const PositionOfThePiecesBlue:MyTuple[] = [
+  [1 ,  [4, 12]],
+  [2 ,  [6, 12]],
+  [3 ,  [8, 12]],
+  [4 ,  [8, 14]],
+  [5 ,  [8, 16]],
+  [6 ,  [10, 16]],
+  [7 ,  [12, 16]],
+  [8 ,  [12, 14]],
+  [9 , [12, 12]],
+  [10, [14, 12]],
+  [11, [16, 12]],
+  [12, [16, 10]],
+  [13, [16, 8]],
+  [14, [14, 8]],
+  [15, [12, 8]],
+  [16, [12, 6]],
+  [17, [12, 4]],
+  [18, [10, 4]],
+  [19, [8, 4]],
+  [20, [8, 6]],
+  [21, [8, 8]],
+  [22, [6, 8]],
+  [23, [4, 8]],
+  [24, [4, 10]],
+  [25, [6, 10]],
+  [26, [8, 10]],
+  [27, [10, 12]],
+  [28, [10, 14]],
+]
+
+// 青チームの駒の位置
+const PositionOfThePiecesRed:MyTuple[] = [
+  [1,  [16, 8]],
+  [2,  [14, 8]],
+  [3,  [12, 8]],
+  [4,  [12, 6]],
+  [5,  [12, 4]],
+  [6,  [10, 4]],
+  [7,  [8, 4]],
+  [8,  [8, 6]],
+  [9,  [8, 8]],
+  [10, [6, 8]],
+  [11, [4, 8]],
+  [12, [4, 10]],
+  [13, [4, 12]],
+  [14, [6, 12]],
+  [15, [8, 12]],
+  [16, [8, 14]],
+  [17, [8, 16]],
+  [18, [10, 16]],
+  [19, [12, 16]],
+  [20, [12, 14]],
+  [21, [12, 12]],
+  [22, [14, 12]],
+  [23, [16, 12]],
+  [24, [16, 10]],
+  [25, [14, 10]],
+  [26, [12, 10]],
+  [27, [10, 8]],
+  [28, [10, 6]]
+]
+  
+
 // 駒の現在位置
-const currentRow = ref(1);
-const currentColumn = ref(1);
+const currentRowRed = ref(1);
+const currentColumnRed = ref(1);
+
+const currentRowBlue = ref(1);
+const currentColumnBlue = ref(1);
+
+const handleEvent = (emitRandomValue:number) =>{
+  // さいころの値が更新されたら、駒の選択状態をリセット（必要に応じて）
+  selectedPieceId.value = null;
+  // ユーザーが駒を選択するのを待つ
+  const randomValue = emitRandomValue;
+  if( isRed.value)
+  {
+    var tmp = crruentValueRed1.value + randomValue;
+    // 赤チーム
+    setTimeout(() => {
+      if (tmp > 28) {
+        // パスであることを表示
+        alert("パス！");
+      }
+      
+      else{
+        movePiece(PositionOfThePiecesRed[tmp][1][0], PositionOfThePiecesRed[tmp][1][1],false);
+        crruentValueRed1.value += randomValue;
+      }
+    }, 10);
+  }
+  else
+  {
+    // 青チーム
+    var tmp = crruentValueBlue1.value + randomValue;
+    setTimeout(() => {
+      if (tmp > 28) {
+        // パスであることを表示
+        alert("パス！");
+      }
+      
+      else{
+        movePiece(PositionOfThePiecesBlue[tmp][1][0], PositionOfThePiecesBlue[tmp][1][1],false);
+        crruentValueBlue1.value += randomValue;
+      }
+    }, 10);
+  }
+
+  // チームを交代する
+  isRed.value = !isRed.value;
+}
+
+/// もろもろ行う関数
+// const ss = async (randomValue:number) => {
+//   // ユーザーが駒を選択するのを待つ
+//   const selectedId = await waitForPieceSelection();
+//   const selectedPiece = pieces.find(piece => piece.id === selectedId);
+//   // movePieceに値を渡す。
+//   if( selectedPiece?.isRed)
+//   {
+//     // 赤チーム
+//     setTimeout(() => {
+//       if (tmp > 28) {
+//         // パスであることを表示
+//         alert("パス！");
+//       }
+      
+//       else{
+//         movePieceAnnex(selectedPiece);
+//         crruentValueRed.value += randomValue;
+//       }
+//     }, 10);
+//   }
+//   else
+//   {
+//     // 青チーム
+//     var tmp = crruentValueBlue.value + randomValue;
+//     setTimeout(() => {
+//       if (tmp > 28) {
+//         // パスであることを表示
+//         alert("パス！");
+//       }
+      
+//       else{
+//         movePiece(PositionOfThePiecesBlue[tmp][1][0], PositionOfThePiecesBlue[tmp][1][1],false);
+//         crruentValueBlue.value += randomValue;
+//       }
+//     }, 10);
+//   }
+
+//   // チームを交代する
+//   isRed.value = !isRed.value;
+// }
 
 /// 駒を移動する関数
-const movePiece = (row, column) => {
-  const piece = document.getElementsByClassName("piece")[0];
+const movePiece = (row:number, column:number, isGoaArea:boolean) => {
+  const pieceName = isRed.value ? "pieceRed" : "pieceBlue";
+  const piece = document.getElementsByClassName(pieceName)[0];
 
   if (!piece) {
     console.error("Piece element not found.");
@@ -112,34 +319,84 @@ const movePiece = (row, column) => {
   piece.style.gridRow = row;
   piece.style.gridColumn = column;
 
-  // 現在位置を更新
-  currentRow.value = row;
-  currentColumn.value = column;
+  // if(isRed.value){
+  //   // 現在位置を更新
+  //   currentRowRed.value = row;
+  //   currentColumnRed.value = column;
+  // }else{
+  //   // 現在位置を更新
+  //   currentRowBlue.value = row;
+  //   currentColumnBlue.value = column;
+  // }
+
 }
 
-// 駒を矢印キーで動かす
-onMounted(() => {
-  // 駒を矢印キーで動かすイベントリスナーを追加
-  document.addEventListener('keydown', (event) => {
-    switch (event.key) {
-      case 'ArrowUp':
-        movePiece(currentRow.value - 1, currentColumn.value);
-        break;
-      case 'ArrowDown':
-        movePiece(currentRow.value + 1, currentColumn.value);
-        break;
-      case 'ArrowLeft':
-        movePiece(currentRow.value, currentColumn.value - 1);
-        break;
-      case 'ArrowRight':
-        movePiece(currentRow.value, currentColumn.value + 1);
-        break;
-    }
+const movePieceAnnex = (selectedPiece:Piece) => {
+  // const pieceName = isRed.value ? "pieceRed" : "pieceBlue";
+  // const piece = document.getElementsByClassName(pieceName)[0];
+
+  // selectedPiece
+
+  // if (!piece) {
+  //   console.error("Piece element not found.");
+  //   return;
+  // }
+
+  // 新しい位置を設定
+  piece.style.gridRow = row;
+  piece.style.gridColumn = column;
+
+  // if(isRed.value){
+  //   // 現在位置を更新
+  //   currentRowRed.value = row;
+  //   currentColumnRed.value = column;
+  // }else{
+  //   // 現在位置を更新
+  //   currentRowBlue.value = row;
+  //   currentColumnBlue.value = column;
+  // }
+
+}
+
+// 駒が選択されるのを待つ Promise を返す関数
+const waitForPieceSelection = (): Promise<number> => {
+  return new Promise((resolve) => {
+    const unwatch = watch(selectedPieceId, (newVal) => {
+      if (newVal !== null) {
+        resolve(newVal);
+        unwatch(); // 一度解決したら監視を解除
+      }
+    });
   });
-});
+};
+// 駒を矢印キーで動かす
+// onMounted(() => {
+//   // 駒を矢印キーで動かすイベントリスナーを追加
+//   document.addEventListener('keydown', (event) => {
+//     switch (event.key) {
+//       case 'ArrowUp':
+//         movePiece(currentRow.value - 1, currentColumn.value);
+//         break;
+//       case 'ArrowDown':
+//         movePiece(currentRow.value + 1, currentColumn.value);
+//         break;
+//       case 'ArrowLeft':
+//         movePiece(currentRow.value, currentColumn.value - 1);
+//         break;
+//       case 'ArrowRight':
+//         movePiece(currentRow.value, currentColumn.value + 1);
+//         break;
+//     }
+//   });
+// });
 
 </script>
 <style>
+.dice-roller{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 .borad{
     display: grid;
     grid-template-columns: repeat(19, 1fr);
@@ -152,19 +409,30 @@ onMounted(() => {
     position: absolute; /* 固定位置にする */
     left: 0; /* 左端に配置 */
     top: 0; /* 上端に配置 */
-
+    justify-items: center;
+    align-items: center;
     background-color: rgba(211, 211, 211, 0.363); /* グリッド全体の背景色 */
   }
 
-  .piece {
-  width: 40px;
-  height: 40px;
-  background-color: red; /* 駒の色 */
-  border-radius: 50%; /* 丸い駒 */
-  place-self: center; /* セルの中央に配置 */
-  grid-row: 1; /* 初期位置: 1行目 */
-  grid-column: 1; /* 初期位置: 1列目 */
-}
+  .pieceRed {
+    width: 40px;
+    height: 40px;
+    background-color: red; /* 駒の色 */
+    border-radius: 50%; /* 丸い駒 */
+    place-self: center; /* セルの中央に配置 */
+    grid-row: 4;
+    grid-column: 12;
+  }
+
+  .pieceBlue {
+    width: 40px;
+    height: 40px;
+    background-color: blue; /* 駒の色 */
+    border-radius: 50%; /* 丸い駒 */
+    place-self: center; /* セルの中央に配置 */
+    grid-row: 16;
+    grid-column: 8;
+  }
 
 
   .cell-goal-Blue1{
@@ -670,6 +938,7 @@ onMounted(() => {
     grid-column: 12;
     background-color: white;
     border: black solid 1px;
+    margin: 5;
   }
 
   .cell4{
